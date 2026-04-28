@@ -74,7 +74,7 @@ export default function Todo() {
             </span>
             <button
               onClick={() => deleteTodo(todo.id)}
-              className="btn-danger btn-small"
+              className="btn-danger btn-small btn-delete"
               aria-label={`Delete: ${todo.text}`}
             >
               Delete

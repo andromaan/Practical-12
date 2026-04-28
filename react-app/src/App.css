@@ -537,4 +537,12 @@ h6 {
   #next-steps a:focus-visible {
     outline: 2px solid var(--accent);
   }
+
+  .btn-delete {
+    background-color: #d54141;
+  }
+
+  .btn-add-contact{
+    background-color: #2a882a;
+  }
 }

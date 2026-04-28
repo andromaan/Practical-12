@@ -83,7 +83,7 @@ export default function AddressBook() {
           />
         </div>
 
-        <button onClick={addContact} className="btn-success">
+        <button onClick={addContact} className="btn-success btn-add-contact">
           Add Contact
         </button>
       </div>
@@ -126,7 +126,7 @@ export default function AddressBook() {
                     <td data-label="Action">
                       <button
                         onClick={() => deleteContact(contact.id)}
-                        className="btn-danger btn-small"
+                        className="btn-danger btn-small btn-delete"
                         aria-label={`Delete contact: ${contact.name}`}
                       >
                         Delete
