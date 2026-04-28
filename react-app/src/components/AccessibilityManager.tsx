@@ -55,11 +55,11 @@ export default function AccessibilityManager() {
           break;
         }
       }
-    }, 100); // Delay to ensure DOM updates
+    }, 1000); // Delay to ensure DOM updates
     return () => clearTimeout(timeoutId); // Cleanup timeout on unmount or route change
   }, [location.pathname]);
 
   return <div className="sr-only" aria-live="polite" aria-atomic="true" style={srOnlyStyle}>
-    {liveMessage}
+    <span>&nbsp;</span>{liveMessage}
   </div>; // This component doesn't render anything
 }
