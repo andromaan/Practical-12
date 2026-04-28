@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/pages.css";
 
 interface TodoItem {
   id: number;
@@ -7,7 +8,9 @@ interface TodoItem {
 }
 
 export default function Todo() {
-  const [todos, setTodos] = useState<TodoItem[]>([{ id: 1, text: "Learn React", completed: false }]);
+  const [todos, setTodos] = useState<TodoItem[]>([
+    { id: 1, text: "Learn React", completed: false },
+  ]);
   const [input, setInput] = useState("");
 
   const addTodo = () => {
@@ -37,58 +40,42 @@ export default function Todo() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
+    <div className="page-container">
       <h1>Todo List</h1>
 
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+      <div className="form-group">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && addTodo()}
           placeholder="Add a new todo..."
-          style={{ flex: 1, padding: "8px" }}
+          className="input-full"
+          aria-label="New todo item"
         />
-        <button onClick={addTodo} style={{ padding: "8px 16px" }}>
+        <button onClick={addTodo} className="btn-primary">
           Add
         </button>
       </div>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="todo-list">
         {todos.map((todo) => (
-          <li
-            key={todo.id}
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              padding: "10px",
-              borderBottom: "1px solid #eee",
-            }}
-          >
+          <li key={todo.id} className="todo-item">
             <input
               type="checkbox"
               checked={todo.completed}
               onChange={() => toggleTodo(todo.id)}
+              aria-label={`Toggle completion for: ${todo.text}`}
             />
             <span
-              style={{
-                flex: 1,
-                textDecoration: todo.completed ? "line-through" : "none",
-                color: todo.completed ? "#999" : "#000",
-              }}
+              className={todo.completed ? "todo-text completed" : "todo-text"}
             >
               {todo.text}
             </span>
             <button
               onClick={() => deleteTodo(todo.id)}
-              style={{
-                padding: "4px 8px",
-                background: "#ff4444",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className="btn-danger btn-small"
+              aria-label={`Delete: ${todo.text}`}
             >
               Delete
             </button>
@@ -97,9 +84,7 @@ export default function Todo() {
       </ul>
 
       {todos.length === 0 && (
-        <p style={{ textAlign: "center", color: "#999" }}>
-          No todos yet. Add one to get started!
-        </p>
+        <p className="empty-state">No todos yet. Add one to get started!</p>
       )}
     </div>
   );

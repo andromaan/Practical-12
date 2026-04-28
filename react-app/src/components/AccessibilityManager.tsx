@@ -1,35 +1,50 @@
-import { useEffect } from "react";
-import { useLocation, useMatches } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-interface RouteHandle {
-  title?: string;
+// Map routes to their titles
+const routeTitles: Record<string, string> = {
+  "/": "Home",
+  "/todo": "Todo",
+  "/address-book": "Address Book",
+};
+
+// List of selectors for focusable elements in order of priority
+const focusableSelectors = [
+  "input:not([disabled])",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "select:not([disabled])",
+  "a[href]",
+  "[tabindex]:not([tabindex='-1'])",
+  "h1",
+];
+
+const srOnlyStyle: React.CSSProperties = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  padding: '0',
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: '0'
 }
 
 export default function AccessibilityManager() {
   const location = useLocation();
-  const matches = useMatches();
+  const [liveMessage, setLiveMessage] = useState(""); // State to trigger re-render for live region updates
 
   useEffect(() => {
     // Update document title based on current route
-    const routeMatch = matches.find(
-      (match) => (match.handle as RouteHandle | undefined)?.title
-    );
-    const title = (routeMatch?.handle as RouteHandle | undefined)?.title || "Home";
+    const title = routeTitles[location.pathname] || "Home";
     document.title = `${title} - React App`;
+
+    setLiveMessage(`${title} page loaded`); // Update live message to announce page load
 
     // Set focus to first interactive element
     // Priority: input, button, textarea, select, then h1 (default)
-    setTimeout(() => {
-      const focusableSelectors = [
-        "input:not([disabled])",
-        "button:not([disabled])",
-        "textarea:not([disabled])",
-        "select:not([disabled])",
-        "a[href]",
-        "[tabindex]:not([tabindex='-1'])",
-        "h1",
-      ];
-
+    const timeoutId = setTimeout(() => {
       for (const selector of focusableSelectors) {
         const element = document.querySelector(selector) as HTMLElement;
         if (element) {
@@ -40,8 +55,11 @@ export default function AccessibilityManager() {
           break;
         }
       }
-    }, 0);
-  }, [location, matches]);
+    }, 100); // Delay to ensure DOM updates
+    return () => clearTimeout(timeoutId); // Cleanup timeout on unmount or route change
+  }, [location.pathname]);
 
-  return null; // This component doesn't render anything
+  return <div className="sr-only" aria-live="polite" aria-atomic="true" style={srOnlyStyle}>
+    {liveMessage}
+  </div>; // This component doesn't render anything
 }

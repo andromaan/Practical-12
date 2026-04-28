@@ -1,6 +1,8 @@
+import "../styles/pages.css";
+
 export default function Home() {
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="page-container">
       <h1>Home</h1>
       <p>Welcome to the application!</p>
       <p>Use the navigation menu to browse different sections:</p>

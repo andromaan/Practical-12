@@ -9,12 +9,15 @@ import "./App.css";
 function App() {
   return (
     <div>
-      <AccessibilityManager />
       <Navigation />
+      <AccessibilityManager />
       <Routes>
-        <Route index handle={{title: "Home"}} path="/" element={<Home />} />
-        <Route handle={{title: "Todo"}} path="/todo" element={<Todo />} />
-        <Route handle={{title: "Address Book"}} path="/address-book" element={<AddressBook />} />
+        <Route index path="/" element={<Home />} />
+        <Route path="/todo" element={<Todo />} />
+        <Route
+          path="/address-book"
+          element={<AddressBook />}
+        />
       </Routes>
     </div>
   );

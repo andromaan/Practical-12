@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/pages.css";
 
 interface Contact {
   id: number;
@@ -8,7 +9,14 @@ interface Contact {
 }
 
 export default function AddressBook() {
-  const [contacts, setContacts] = useState<Contact[]>([{ id: 1, name: "John Doe", email: "john@example.com", phone: "+1 (555) 000-0000" }]);
+  const [contacts, setContacts] = useState<Contact[]>([
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john@example.com",
+      phone: "+1 (555) 000-0000",
+    },
+  ]);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
 
   const addContact = () => {
@@ -29,119 +37,79 @@ export default function AddressBook() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+    <div className="page-container">
       <h1>Address Book</h1>
 
-      <div
-        style={{
-          marginBottom: "30px",
-          padding: "20px",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-        }}
-      >
+      <div className="form-card">
         <h2 style={{ marginTop: 0 }}>Add New Contact</h2>
 
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: "block", marginBottom: "4px" }}>Name:</label>
+        <div className="form-field">
+          <label htmlFor="contact-name">Name:</label>
           <input
+            id="contact-name"
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Full name"
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            className="input-full"
           />
         </div>
 
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: "block", marginBottom: "4px" }}>
-            Email:
-          </label>
+        <div className="form-field">
+          <label htmlFor="contact-email">Email:</label>
           <input
+            id="contact-email"
             type="email"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
             placeholder="email@example.com"
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            className="input-full"
           />
         </div>
 
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: "block", marginBottom: "4px" }}>
-            Phone:
-          </label>
+        <div className="form-field">
+          <label htmlFor="contact-phone">Phone:</label>
           <input
+            id="contact-phone"
             type="tel"
             value={formData.phone}
             onChange={(e) =>
               setFormData({ ...formData, phone: e.target.value })
             }
             placeholder="+1 (555) 000-0000"
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            className="input-full"
           />
         </div>
 
-        <button
-          onClick={addContact}
-          style={{
-            padding: "8px 16px",
-            background: "#4CAF50",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={addContact} className="btn-success">
           Add Contact
         </button>
       </div>
 
-      <div>
+      <div className="contacts-list">
         <h2>Contacts ({contacts.length})</h2>
         {contacts.length === 0 ? (
-          <p style={{ color: "#999" }}>
+          <p className="empty-state">
             No contacts yet. Add one to get started!
           </p>
         ) : (
           <div>
             {contacts.map((contact) => (
-              <div
-                key={contact.id}
-                style={{
-                  padding: "15px",
-                  marginBottom: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                  }}
-                >
-                  <div>
+              <div key={contact.id} className="contact-card">
+                <div className="contact-header">
+                  <div className="contact-info">
                     <h3 style={{ margin: "0 0 8px 0" }}>{contact.name}</h3>
-                    <p style={{ margin: "4px 0", color: "#666" }}>
-                      📧 {contact.email}
-                    </p>
+                    <p className="contact-detail">📧 {contact.email}</p>
                     {contact.phone && (
-                      <p style={{ margin: "4px 0", color: "#666" }}>
-                        📱 {contact.phone}
-                      </p>
+                      <p className="contact-detail">📱 {contact.phone}</p>
                     )}
                   </div>
                   <button
                     onClick={() => deleteContact(contact.id)}
-                    style={{
-                      padding: "4px 8px",
-                      background: "#ff4444",
-                      color: "white",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
+                    className="btn-danger btn-small"
+                    aria-label={`Delete contact: ${contact.name}`}
                   >
                     Delete
                   </button>
