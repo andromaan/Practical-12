@@ -95,27 +95,47 @@ export default function AddressBook() {
             No contacts yet. Add one to get started!
           </p>
         ) : (
-          <div>
-            {contacts.map((contact) => (
-              <div key={contact.id} className="contact-card">
-                <div className="contact-header">
-                  <div className="contact-info">
-                    <h3 style={{ margin: "0 0 8px 0" }}>{contact.name}</h3>
-                    <p className="contact-detail">📧 {contact.email}</p>
-                    {contact.phone && (
-                      <p className="contact-detail">📱 {contact.phone}</p>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => deleteContact(contact.id)}
-                    className="btn-danger btn-small"
-                    aria-label={`Delete contact: ${contact.name}`}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="table-wrapper">
+            <table className="contacts-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contacts.map((contact) => (
+                  <tr key={contact.id}>
+                    <td data-label="Name">
+                      <strong>{contact.name}</strong>
+                    </td>
+                    <td data-label="Email">
+                      <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                    </td>
+                    <td data-label="Phone">
+                      {contact.phone ? (
+                        <a href={`tel:${contact.phone.replace(/\s+/g, "")}`}>
+                          {contact.phone}
+                        </a>
+                      ) : (
+                        <span className="text-secondary">—</span>
+                      )}
+                    </td>
+                    <td data-label="Action">
+                      <button
+                        onClick={() => deleteContact(contact.id)}
+                        className="btn-danger btn-small"
+                        aria-label={`Delete contact: ${contact.name}`}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

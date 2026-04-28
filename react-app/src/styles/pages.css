@@ -76,39 +76,70 @@
   margin-top: 30px;
 }
 
-.contact-card {
-  padding: 15px;
-  margin-bottom: 10px;
+/* Table Styles */
+.table-wrapper {
+  overflow-x: auto;
   border: 2px solid var(--border);
   border-radius: 8px;
   background-color: var(--bg-secondary);
-  transition: border-color 0.3s;
 }
 
-.contact-card:hover {
-  border-color: var(--accent);
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
 }
 
-.contact-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 15px;
+.contacts-table thead {
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--border);
 }
 
-.contact-info {
-  flex: 1;
-}
-
-.contact-info h3 {
-  margin: 0 0 8px 0;
+.contacts-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
   color: var(--text-h);
+  white-space: nowrap;
 }
 
-.contact-detail {
-  margin: 4px 0;
+.contacts-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s;
+}
+
+.contacts-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.contacts-table tbody tr:hover {
+  background-color: rgba(0, 102, 204, 0.05);
+}
+
+.contacts-table td {
+  padding: 12px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.contacts-table a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.contacts-table a:hover {
+  color: var(--accent-hover);
+}
+
+.contacts-table .text-secondary {
   color: var(--text-secondary);
-  font-size: 14px;
+}
+
+/* Dark theme table adjustments */
+@media (prefers-color-scheme: dark) {
+  .contacts-table tbody tr:hover {
+    background-color: rgba(102, 179, 255, 0.08);
+  }
 }
 
 /* Button Sizes */
@@ -142,12 +173,21 @@
     flex-direction: column;
   }
 
-  .contact-header {
-    flex-direction: column;
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .contact-card {
-    padding: 12px;
+  .contacts-table {
+    font-size: 14px;
+  }
+
+  .contacts-table th {
+    padding: 10px 8px;
+  }
+
+  .contacts-table td {
+    padding: 10px 8px;
   }
 
   .btn-small {
@@ -158,11 +198,11 @@
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .todo-item,
-  .contact-card,
   button,
   input,
   textarea,
-  select {
+  select,
+  .contacts-table tbody tr {
     transition: none !important;
   }
 }
@@ -170,7 +210,7 @@
 /* Accessibility: High contrast mode */
 @media (prefers-contrast: more) {
   .form-card,
-  .contact-card {
+  .table-wrapper {
     border-width: 3px;
   }
 
@@ -182,5 +222,13 @@
   textarea,
   select {
     border-width: 3px;
+  }
+
+  .contacts-table thead {
+    border-bottom-width: 3px;
+  }
+
+  .contacts-table tbody tr {
+    border-bottom-width: 2px;
   }
 }
