@@ -41,6 +41,10 @@ jobs:
         working-directory: react-app
         run: npx wait-on http://127.0.0.1:4173
 
-      - name: Run accessibility checks
+      - name: Run accessibility checks (Light mode)
         working-directory: react-app
         run: npx pa11y-ci --config .pa11yci
+
+      - name: Run accessibility checks (Dark mode)
+        working-directory: react-app
+        run: npx pa11y-ci --config .pa11yci-dark.json
