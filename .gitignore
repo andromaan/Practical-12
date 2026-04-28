@@ -1,0 +1,5 @@
+test-results/
+playwright-report/
+react-app/node_modules/
+react-app/test-results/
+react-app/playwright-report/index.html

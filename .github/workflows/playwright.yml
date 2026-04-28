@@ -1,47 +1,53 @@
-name: Playwright e2e Tests
+name: Playwright e2e & a11y Tests
 
 on:
-  push:
-    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ master ]
 
 jobs:
-  test:
-    timeout-minutes: 60
+  playwright:
+    name: "Run Tests & Report"
     runs-on: ubuntu-latest
     
-    # Встановлюємо робочу директорію для всіх кроків run
+    # Необхідні дозволи для публікації коментарів у PR та створення Checks
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+
     defaults:
       run:
         working-directory: ./react-app
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-        cache: 'npm'
-        # Вказуємо шлях до lock-файлу для коректного кешування
-        cache-dependency-path: './react-app/package-lock.json' 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: './react-app/package-lock.json'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Install Playwright Browsers and system dependencies
-      run: npx playwright install --with-deps
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
-    - name: Run Playwright tests
-      run: npx playwright test
+      - name: Run Playwright tests
+        id: playwright-tests
+        continue-on-error: true
+        # Змушуємо Playwright генерувати звіт у форматі JUnit
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+        run: npx playwright test --reporter=list,junit
 
-    - name: Upload Playwright report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        # Шлях до артефакту також має враховувати директорію
-        path: react-app/playwright-report/ 
-        retention-days: 30
+      - name: Publish Test Results to PR Comment
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          # Вказуємо шлях до згенерованого XML файлу
+          files: "react-app/results.xml"
