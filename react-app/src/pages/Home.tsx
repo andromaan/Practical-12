@@ -3,8 +3,8 @@ import "../styles/pages.css";
 export default function Home() {
   return (
     <div className="page-container">
-      <h1>Home</h1>
-      <p>Welcome to the application!</p>
+      <h1 style={{ color: "#777777", backgroundColor: "#888888" }}>Home</h1>
+      <p style={{ color: "#888888" }}>Welcome to the application!</p>
       <p>Use the navigation menu to browse different sections:</p>
       <ul>
         <li>
